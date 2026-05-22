@@ -98,18 +98,6 @@ export default function RelationshipTimer() {
             <Dot />
             <TimeUnit value={elapsed.seconds} label="Seconds" />
           </div>
-
-          <motion.div
-            className="mt-10 h-0.5 bg-gradient-to-r from-transparent via-amber-400 to-transparent"
-            initial={{ scaleX: 0 }}
-            whileInView={{ scaleX: 1 }}
-            viewport={{ once: true }}
-            transition={{ duration: 1.2 }}
-          />
-
-          <p className="mt-6 text-sm font-inter text-slate-500 italic">
-            Started January 3, 2026 · 6:30 PM ❤️
-          </p>
         </div>
       </motion.div>
     </section>
