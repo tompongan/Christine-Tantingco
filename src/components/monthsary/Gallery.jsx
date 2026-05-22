@@ -1,15 +1,10 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
 import { useState } from 'react';
 import { X, Camera } from 'lucide-react';
 
 const galleryItems = [
-  { id: 1, ratio: '2/3' },
-  { id: 2, ratio: '1/1' },
-  { id: 3, ratio: '3/2' },
-  { id: 4, ratio: '2/3' },
-  { id: 5, ratio: '1/1' },
-  { id: 6, ratio: '3/2' },
+  { id: 1 }, { id: 2 }, { id: 3 },
+  { id: 4 }, { id: 5 }, { id: 6 },
 ];
 
 function ImagePlaceholder({ item, onOpen, index }) {
@@ -34,18 +29,14 @@ function ImagePlaceholder({ item, onOpen, index }) {
 }
 
 export default function Gallery() {
-  const { ref, inView } = useInView({
-    triggerOnce: true,
-    threshold: 0.2,
-  });
-
   const [selectedItem, setSelectedItem] = useState(null);
 
   return (
-    <section ref={ref} className="relative w-full py-20 bg-gradient-to-b from-white via-yellow-50 to-white overflow-hidden px-4 sm:px-8">
+    <section className="relative w-full py-20 bg-gradient-to-b from-white via-yellow-50 to-white overflow-hidden px-4 sm:px-8">
       <motion.div
         initial={{ opacity: 0, y: 20 }}
-        animate={inView ? { opacity: 1, y: 0 } : {}}
+        whileInView={{ opacity: 1, y: 0 }}
+        viewport={{ once: true, amount: 0.2 }}
         transition={{ duration: 0.8 }}
         className="max-w-7xl mx-auto"
       >
@@ -53,20 +44,13 @@ export default function Gallery() {
           Gallery of Moments
         </h2>
 
-        {/* Masonry Grid */}
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-max">
           {galleryItems.map((item, idx) => (
-            <ImagePlaceholder
-              key={item.id}
-              item={item}
-              onOpen={setSelectedItem}
-              index={idx}
-            />
+            <ImagePlaceholder key={item.id} item={item} onOpen={setSelectedItem} index={idx} />
           ))}
         </div>
       </motion.div>
 
-      {/* Lightbox Modal */}
       <AnimatePresence>
         {selectedItem && (
           <motion.div
@@ -89,12 +73,11 @@ export default function Gallery() {
                   <p className="text-lg font-inter text-amber-800 opacity-70">Add Your Photo Here</p>
                 </div>
               </div>
-
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
                 onClick={() => setSelectedItem(null)}
-                className="absolute top-4 right-4 p-2 bg-white/80 hover:bg-white rounded-full transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
+                className="absolute top-4 right-4 p-2 bg-white/80 hover:bg-white rounded-full transition-colors"
               >
                 <X size={24} className="text-slate-900" />
               </motion.button>
