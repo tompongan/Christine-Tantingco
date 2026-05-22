@@ -112,7 +112,17 @@ export default function Closing() {
         </motion.div>
       </motion.div>
 
-
+      {/* Footer */}
+      <motion.footer
+        initial={{ opacity: 0 }}
+        whileInView={{ opacity: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 1, delay: 1.5 }}
+        className="absolute bottom-8 left-0 right-0 text-center z-10"
+      >
+        <p className="text-sm sm:text-base font-inter text-slate-400">Made with love by Alsthom C. Pongan ✨</p>
+        <p className="text-xs text-slate-500 mt-2">June 3, 2026</p>
+      </motion.footer>
     </section>
   );
 }
