@@ -35,7 +35,7 @@ function PhotoCard({ photo, caption, onOpen, index }) {
         <img
           src={photo.url}
           alt={photo.name}
-          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="absolute inset-0 w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 bg-gradient-to-br from-pink-50 to-amber-50"
           loading="lazy"
         />
         {/* Soft overlay */}
