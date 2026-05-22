@@ -12,6 +12,14 @@ const CAPTIONS = [
   { short: "My person ❤️", long: "Out of everyone in the world, I'm so lucky you chose me." },
   { short: "Pure happiness ✨", long: "This is what joy looks like — it looks like you." },
   { short: "Us, always 🌹", long: "I'd choose this, choose you, over and over again without hesitation." },
+  { short: "My safe place 💕", long: "In your arms, everything feels right. You're my sanctuary in this chaotic world." },
+  { short: "Favorite moments 📸", long: "Every second with you becomes a cherished memory I never want to forget." },
+  { short: "My happiness 😊", long: "Before you, I didn't know love could feel this effortless and beautiful." },
+  { short: "Us against the world 🌍", long: "Together, we can conquer anything. You're my greatest strength and my most beautiful adventure." },
+  { short: "Memories I'll treasure forever 💌", long: "These moments with you are the greatest gifts. They're the fabric of my happiest memories." },
+  { short: "You are my love story 📖", long: "I never believed in fairy tales until I met you. Now I'm living the best one." },
+  { short: "My heart chose you ❣️", long: "There's something about your presence that makes everything feel complete and whole." },
+  { short: "Forever with you 🌟", long: "I want to wake up to your smile, hold your hand, and build a lifetime of moments with you." },
 ];
 
 function PhotoCard({ photo, caption, onOpen, index, onError }) {
