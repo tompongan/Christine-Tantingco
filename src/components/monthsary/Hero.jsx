@@ -1,7 +1,7 @@
 import { motion } from 'framer-motion';
 import { Heart } from 'lucide-react';
 
-export default function Hero({ onOpenHeart }) {
+export default function Hero({ onOpenHeart, heartOpened }) {
   const containerVariants = {
     hidden: { opacity: 0 },
     visible: {
@@ -117,15 +117,18 @@ export default function Hero({ onOpenHeart }) {
         </motion.div>
       </motion.div>
 
-      {/* Scroll Indicator */}
-      <motion.div
-        className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
-        animate={{ y: [0, 10, 0] }}
-        transition={{ duration: 2, repeat: Infinity }}
-      >
-        <div className="text-amber-600 text-sm font-inter">Scroll to continue</div>
-        <div className="text-amber-600 text-2xl text-center">↓</div>
-      </motion.div>
+      {/* Scroll Indicator — only shown after heart is opened */}
+      {heartOpened && (
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1, y: [0, 10, 0] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          className="absolute bottom-8 left-1/2 -translate-x-1/2 z-10"
+        >
+          <div className="text-amber-600 text-sm font-inter">Scroll to continue</div>
+          <div className="text-amber-600 text-2xl text-center">↓</div>
+        </motion.div>
+      )}
     </div>
   );
 }
