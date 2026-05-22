@@ -38,13 +38,12 @@ export default function Monthsary() {
       <div ref={loveLetterRef}>
         <LoveLetter />
       </div>
-
+      <RelationshipTimer />
       <Gallery />
       <MusicPlayer />
       <ReasonsWhy />
       <InteractiveHeart />
       <Closing />
-      <RelationshipTimer />
     </div>
   );
 }
