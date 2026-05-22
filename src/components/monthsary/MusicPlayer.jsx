@@ -2,6 +2,25 @@ import { motion } from 'framer-motion';
 import { Music, Upload } from 'lucide-react';
 import { useState } from 'react';
 
+const songs = [
+  { category: 'Romantic & Sweet Love Songs', tracks: [
+    'Until I Found You — Stephen Sanchez',
+    'Palagi — TJ Monterde',
+    'Ikaw at Ako — Johnoy Danao',
+    'Araw-Araw — Ben&Ben',
+    'Perfect — Ed Sheeran',
+    'You Are the Reason — Calum Scott',
+    'Beautiful Scars — Maximillian',
+  ] },
+  { category: 'Soft & Emotional Vibes', tracks: [
+    'Tahanan — Adie',
+    'Bawat Piyesa — Munimuni',
+    'Maybe The Night',
+    'Make It With You',
+    'The One — Kodaline',
+  ] },
+];
+
 export default function MusicPlayer() {
   const [isPlaying, setIsPlaying] = useState(false);
 
@@ -16,10 +35,10 @@ export default function MusicPlayer() {
         whileInView={{ opacity: 1, y: 0 }}
         viewport={{ once: true, amount: 0 }}
         transition={{ duration: 0.8 }}
-        className="max-w-2xl mx-auto relative z-10"
+        className="max-w-4xl mx-auto relative z-10"
       >
         <h2 className="text-4xl sm:text-5xl font-cormorant italic font-light text-center mb-12 text-slate-900">
-          Our Love Song
+          My Song for You
         </h2>
 
         <div className="glass rounded-3xl p-8 sm:p-12 glow-pink">
@@ -69,29 +88,29 @@ export default function MusicPlayer() {
               </motion.button>
             </div>
 
-            <div className="border-2 border-dashed border-amber-300/50 rounded-xl p-6 hover:border-amber-400 hover:bg-amber-50/50 transition-all duration-300 cursor-pointer group">
-              <label className="flex flex-col items-center justify-center gap-3 cursor-pointer">
-                <Upload size={32} className="text-amber-600 opacity-60 group-hover:opacity-100 transition-opacity" />
-                <span className="text-center">
-                  <p className="font-inter font-medium text-slate-900">Add Your Favorite Song</p>
-                  <p className="text-sm text-slate-600">Click to upload audio</p>
-                </span>
-                <input type="file" accept="audio/*" className="hidden" />
-              </label>
-            </div>
-
-            <div className="space-y-2">
-              <div className="h-1 bg-slate-200 rounded-full overflow-hidden">
+            <div className="mt-8 space-y-6">
+              {songs.map((section, idx) => (
                 <motion.div
-                  animate={isPlaying ? { width: ['0%', '100%'] } : { width: '0%' }}
-                  transition={isPlaying ? { duration: 30, ease: 'linear' } : { duration: 0 }}
-                  className="h-full bg-gradient-to-r from-amber-400 to-pink-400"
-                />
-              </div>
-              <div className="flex justify-between text-xs text-slate-600 font-inter">
-                <span>0:00</span>
-                <span>--:--</span>
-              </div>
+                  key={idx}
+                  initial={{ opacity: 0, y: 10 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: idx * 0.1 }}
+                  className="border border-amber-200/50 rounded-xl p-5 bg-white/50"
+                >
+                  <h3 className="text-lg font-cormorant italic font-light text-slate-900 mb-4">
+                    {section.category}
+                  </h3>
+                  <ul className="space-y-2">
+                    {section.tracks.map((track, trackIdx) => (
+                      <li key={trackIdx} className="text-sm font-inter text-slate-700 flex items-start gap-3">
+                        <span className="text-amber-500 mt-1 flex-shrink-0">♪</span>
+                        <span>{track}</span>
+                      </li>
+                    ))}
+                  </ul>
+                </motion.div>
+              ))}
             </div>
           </div>
         </div>
