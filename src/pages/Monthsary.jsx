@@ -1,7 +1,7 @@
 import { useRef } from 'react';
 import Hero from '@/components/monthsary/Hero';
 import LoveLetter from '@/components/monthsary/LoveLetter';
-import Timeline from '@/components/monthsary/Timeline';
+
 import Gallery from '@/components/monthsary/Gallery';
 import MusicPlayer from '@/components/monthsary/MusicPlayer';
 import ReasonsWhy from '@/components/monthsary/ReasonsWhy';
@@ -23,7 +23,7 @@ export default function Monthsary() {
       <div ref={loveLetterRef}>
         <LoveLetter />
       </div>
-      <Timeline />
+
       <Gallery />
       <MusicPlayer />
       <ReasonsWhy />
