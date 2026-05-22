@@ -1,35 +1,62 @@
 import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
-import { X, Camera } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { X, Camera, Loader2 } from 'lucide-react';
+import { base44 } from '@/api/base44Client';
 
-const galleryItems = [
-  { id: 1 }, { id: 2 }, { id: 3 },
-  { id: 4 }, { id: 5 }, { id: 6 },
-];
-
-function ImagePlaceholder({ item, onOpen, index }) {
+function PhotoItem({ photo, onOpen, index }) {
   return (
     <motion.button
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ delay: index * 0.05 }}
-      onClick={() => onOpen(item)}
-      className="group relative h-64 bg-gradient-to-br from-pink-200 via-amber-100 to-yellow-100 rounded-2xl overflow-hidden glass glow-pink hover:glow-gold transition-all duration-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 flex items-center justify-center"
-      whileHover={{ scale: 1.05 }}
+      onClick={() => onOpen(photo)}
+      className="group relative h-64 rounded-2xl overflow-hidden glass glow-pink hover:glow-gold transition-all duration-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
+      whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
     >
-      <div className="absolute inset-0 bg-gradient-to-t from-black/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
-      <div className="relative text-center">
-        <Camera size={40} className="mx-auto text-amber-700 mb-2 opacity-60 group-hover:opacity-100 transition-opacity" />
-        <p className="text-sm font-inter text-amber-800 opacity-70 group-hover:opacity-100 transition-opacity">Add Photo</p>
-      </div>
+      <img
+        src={photo.url}
+        alt={photo.name}
+        className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110"
+      />
+      <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
     </motion.button>
   );
 }
 
+function PlaceholderItem({ index }) {
+  return (
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      whileInView={{ opacity: 1, scale: 1 }}
+      viewport={{ once: true, margin: '-100px' }}
+      transition={{ delay: index * 0.05 }}
+      className="relative h-64 bg-gradient-to-br from-pink-200 via-amber-100 to-yellow-100 rounded-2xl overflow-hidden glass glow-pink flex items-center justify-center"
+    >
+      <div className="text-center">
+        <Camera size={40} className="mx-auto text-amber-700 mb-2 opacity-40" />
+        <p className="text-sm font-inter text-amber-800 opacity-50">No photo</p>
+      </div>
+    </motion.div>
+  );
+}
+
 export default function Gallery() {
-  const [selectedItem, setSelectedItem] = useState(null);
+  const [photos, setPhotos] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [selectedPhoto, setSelectedPhoto] = useState(null);
+
+  useEffect(() => {
+    base44.functions.invoke('getDrivePhotos', {})
+      .then(res => {
+        setPhotos(res.data.photos || []);
+      })
+      .finally(() => setLoading(false));
+  }, []);
+
+  // Show 6 slots minimum, fill with real photos
+  const slots = Array.from({ length: Math.max(6, photos.length) }, (_, i) => photos[i] || null);
 
   return (
     <section className="relative w-full py-20 bg-gradient-to-b from-white via-yellow-50 to-white overflow-hidden px-4 sm:px-8">
@@ -44,39 +71,47 @@ export default function Gallery() {
           Gallery of Moments
         </h2>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-max">
-          {galleryItems.map((item, idx) => (
-            <ImagePlaceholder key={item.id} item={item} onOpen={setSelectedItem} index={idx} />
-          ))}
-        </div>
+        {loading ? (
+          <div className="flex items-center justify-center py-20">
+            <Loader2 className="w-10 h-10 text-amber-500 animate-spin" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-max">
+            {slots.map((photo, idx) =>
+              photo
+                ? <PhotoItem key={photo.id} photo={photo} onOpen={setSelectedPhoto} index={idx} />
+                : <PlaceholderItem key={`placeholder-${idx}`} index={idx} />
+            )}
+          </div>
+        )}
       </motion.div>
 
+      {/* Lightbox */}
       <AnimatePresence>
-        {selectedItem && (
+        {selectedPhoto && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            onClick={() => setSelectedItem(null)}
-            className="fixed inset-0 z-50 bg-black/70 backdrop-blur-sm flex items-center justify-center p-4"
+            onClick={() => setSelectedPhoto(null)}
+            className="fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4"
           >
             <motion.div
               initial={{ scale: 0.9, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.9, opacity: 0 }}
               onClick={(e) => e.stopPropagation()}
-              className="relative max-w-4xl w-full aspect-square bg-gradient-to-br from-pink-200 to-amber-100 rounded-3xl glass glow-gold flex items-center justify-center overflow-hidden"
+              className="relative max-w-4xl w-full rounded-3xl overflow-hidden shadow-2xl"
             >
-              <div className="flex items-center justify-center w-full h-full">
-                <div className="text-center">
-                  <Camera size={60} className="mx-auto text-amber-700 mb-4 opacity-50" />
-                  <p className="text-lg font-inter text-amber-800 opacity-70">Add Your Photo Here</p>
-                </div>
-              </div>
+              <img
+                src={selectedPhoto.url}
+                alt={selectedPhoto.name}
+                className="w-full h-auto max-h-[85vh] object-contain bg-black"
+              />
               <motion.button
                 whileHover={{ scale: 1.1 }}
                 whileTap={{ scale: 0.95 }}
-                onClick={() => setSelectedItem(null)}
+                onClick={() => setSelectedPhoto(null)}
                 className="absolute top-4 right-4 p-2 bg-white/80 hover:bg-white rounded-full transition-colors"
               >
                 <X size={24} className="text-slate-900" />
