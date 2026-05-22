@@ -14,7 +14,7 @@ const CAPTIONS = [
   { short: "Us, always 🌹", long: "I'd choose this, choose you, over and over again without hesitation." },
 ];
 
-function PhotoCard({ photo, caption, onOpen, index }) {
+function PhotoCard({ photo, caption, onOpen, index, onError }) {
   const isEven = index % 2 === 0;
   return (
     <motion.div
@@ -37,6 +37,7 @@ function PhotoCard({ photo, caption, onOpen, index }) {
           alt={photo.name}
           className="absolute inset-0 w-full h-full object-contain transition-transform duration-700 group-hover:scale-105 bg-gradient-to-br from-pink-50 to-amber-50"
           loading="lazy"
+          onError={() => onError(photo.id)}
         />
         {/* Soft overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
@@ -120,6 +121,10 @@ export default function Gallery() {
       .finally(() => setLoading(false));
   }, []);
 
+  const handleImageError = (photoId) => {
+    setPhotos(prev => prev.filter(p => p.id !== photoId));
+  };
+
   const slots = Array.from({ length: Math.max(6, photos.length) }, (_, i) => photos[i] || null);
 
   return (
@@ -165,7 +170,7 @@ export default function Gallery() {
             {slots.map((photo, idx) => {
               const caption = CAPTIONS[idx % CAPTIONS.length];
               return photo
-                ? <PhotoCard key={photo.id} photo={photo} caption={caption} onOpen={setSelectedPhoto} index={idx} />
+                ? <PhotoCard key={photo.id} photo={photo} caption={caption} onOpen={setSelectedPhoto} index={idx} onError={handleImageError} />
                 : <PlaceholderCard key={`placeholder-${idx}`} caption={caption} index={idx} />;
             })}
           </div>
