@@ -11,7 +11,7 @@ function PhotoItem({ photo, onOpen, index }) {
       viewport={{ once: true, margin: '-100px' }}
       transition={{ delay: index * 0.05 }}
       onClick={() => onOpen(photo)}
-      className="group relative h-64 rounded-2xl overflow-hidden glass glow-pink hover:glow-gold transition-all duration-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
+      className="group relative w-full aspect-square rounded-2xl overflow-hidden glass glow-pink hover:glow-gold transition-all duration-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
       whileHover={{ scale: 1.03 }}
       whileTap={{ scale: 0.98 }}
     >
@@ -32,7 +32,7 @@ function PlaceholderItem({ index }) {
       whileInView={{ opacity: 1, scale: 1 }}
       viewport={{ once: true, margin: '-100px' }}
       transition={{ delay: index * 0.05 }}
-      className="relative h-64 bg-gradient-to-br from-pink-200 via-amber-100 to-yellow-100 rounded-2xl overflow-hidden glass glow-pink flex items-center justify-center"
+      className="relative w-full aspect-square bg-gradient-to-br from-pink-200 via-amber-100 to-yellow-100 rounded-2xl overflow-hidden glass glow-pink flex items-center justify-center"
     >
       <div className="text-center">
         <Camera size={40} className="mx-auto text-amber-700 mb-2 opacity-40" />
@@ -76,7 +76,7 @@ export default function Gallery() {
             <Loader2 className="w-10 h-10 text-amber-500 animate-spin" />
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6 auto-rows-max">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
             {slots.map((photo, idx) =>
               photo
                 ? <PhotoItem key={photo.id} photo={photo} onOpen={setSelectedPhoto} index={idx} />
