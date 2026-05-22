@@ -8,7 +8,7 @@ function PhotoItem({ photo, onOpen, index }) {
     <motion.button
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: '-100px' }}
+      viewport={{ once: true, margin: '0px' }}
       transition={{ delay: index * 0.05 }}
       onClick={() => onOpen(photo)}
       className="group relative w-full aspect-square rounded-2xl overflow-hidden glass glow-pink hover:glow-gold transition-all duration-300 cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600"
@@ -30,7 +30,7 @@ function PlaceholderItem({ index }) {
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
       whileInView={{ opacity: 1, scale: 1 }}
-      viewport={{ once: true, margin: '-100px' }}
+      viewport={{ once: true, margin: '0px' }}
       transition={{ delay: index * 0.05 }}
       className="relative w-full aspect-square bg-gradient-to-br from-pink-200 via-amber-100 to-yellow-100 rounded-2xl overflow-hidden glass glow-pink flex items-center justify-center"
     >
@@ -63,7 +63,7 @@ export default function Gallery() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0 }}
         transition={{ duration: 0.8 }}
         className="max-w-7xl mx-auto"
       >

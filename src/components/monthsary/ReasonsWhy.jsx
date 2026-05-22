@@ -34,7 +34,7 @@ export default function ReasonsWhy() {
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         whileInView={{ opacity: 1, y: 0 }}
-        viewport={{ once: true, amount: 0.2 }}
+        viewport={{ once: true, amount: 0 }}
         transition={{ duration: 0.8 }}
         className="max-w-6xl mx-auto relative z-10"
       >
@@ -49,7 +49,7 @@ export default function ReasonsWhy() {
           variants={containerVariants}
           initial="hidden"
           whileInView="visible"
-          viewport={{ once: true, amount: 0.2 }}
+          viewport={{ once: true, amount: 0 }}
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
           {reasons.map((reason, idx) => (
