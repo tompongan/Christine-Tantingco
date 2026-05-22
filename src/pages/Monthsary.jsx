@@ -7,6 +7,7 @@ import MusicPlayer from '@/components/monthsary/MusicPlayer';
 import ReasonsWhy from '@/components/monthsary/ReasonsWhy';
 import InteractiveHeart from '@/components/monthsary/InteractiveHeart';
 import Closing from '@/components/monthsary/Closing';
+import RelationshipTimer from '@/components/monthsary/RelationshipTimer';
 
 export default function Monthsary() {
   const loveLetterRef = useRef(null);
@@ -43,6 +44,7 @@ export default function Monthsary() {
       <ReasonsWhy />
       <InteractiveHeart />
       <Closing />
+      <RelationshipTimer />
     </div>
   );
 }
