@@ -29,12 +29,14 @@ function PhotoCard({ photo, caption, onOpen, index }) {
         onClick={() => onOpen(photo)}
         whileHover={{ scale: 1.03 }}
         whileTap={{ scale: 0.98 }}
-        className="relative w-full md:w-1/2 aspect-[4/3] rounded-3xl overflow-hidden shadow-2xl group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 flex-shrink-0"
+        className="relative w-full md:w-1/2 rounded-3xl overflow-hidden shadow-2xl group focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-amber-600 flex-shrink-0"
+      style={{ aspectRatio: '4/3' }}
       >
         <img
           src={photo.url}
           alt={photo.name}
-          className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110"
+          loading="lazy"
         />
         {/* Soft overlay */}
         <div className="absolute inset-0 bg-gradient-to-t from-black/30 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-400" />
@@ -190,7 +192,7 @@ export default function Gallery() {
               <img
                 src={selectedPhoto.url}
                 alt={selectedPhoto.name}
-                className="w-full h-auto max-h-[85vh] object-contain bg-black"
+                className="w-full h-auto max-h-[85vh] object-contain bg-black block"
               />
               <motion.button
                 whileHover={{ scale: 1.1 }}

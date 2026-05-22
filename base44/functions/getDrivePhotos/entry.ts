@@ -7,7 +7,7 @@ Deno.serve(async (req) => {
 
     // Search for image files across the entire Drive
     const query = encodeURIComponent("mimeType contains 'image/' and trashed = false");
-    const fields = encodeURIComponent("files(id,name,mimeType,thumbnailLink,webContentLink)");
+    const fields = encodeURIComponent("files(id,name,mimeType)");
     const url = `https://www.googleapis.com/drive/v3/files?q=${query}&fields=${fields}&pageSize=50&orderBy=createdTime desc`;
 
     const res = await fetch(url, {
@@ -23,10 +23,10 @@ Deno.serve(async (req) => {
     const files = (data.files || []).map(f => ({
       id: f.id,
       name: f.name,
-      // thumbnailLink gives a direct image preview URL
-      url: f.thumbnailLink ? f.thumbnailLink.replace('=s220', '=s1200') : null,
-      thumbUrl: f.thumbnailLink || null,
-    })).filter(f => f.url);
+      // Use Google Drive's public thumbnail embed URL — no auth cookie needed
+      url: `https://drive.google.com/thumbnail?id=${f.id}&sz=w1200`,
+      thumbUrl: `https://drive.google.com/thumbnail?id=${f.id}&sz=w400`,
+    }));
 
     return Response.json({ photos: files });
   } catch (error) {
