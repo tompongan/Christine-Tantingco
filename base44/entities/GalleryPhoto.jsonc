@@ -1,0 +1,26 @@
+{
+  "name": "GalleryPhoto",
+  "type": "object",
+  "properties": {
+    "drive_id": {
+      "type": "string",
+      "description": "Original Google Drive file ID"
+    },
+    "name": {
+      "type": "string",
+      "description": "File name"
+    },
+    "base44_url": {
+      "type": "string",
+      "description": "Re-hosted URL on Base44 public storage"
+    },
+    "order": {
+      "type": "number",
+      "description": "Display order"
+    }
+  },
+  "required": [
+    "drive_id",
+    "base44_url"
+  ]
+}

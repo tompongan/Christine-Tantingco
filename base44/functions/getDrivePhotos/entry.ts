@@ -3,9 +3,25 @@ import { createClientFromRequest } from 'npm:@base44/sdk@0.8.25';
 Deno.serve(async (req) => {
   try {
     const base44 = createClientFromRequest(req);
+
+    // Read cached photos from entity (service role — no user auth needed)
+    const photos = await base44.asServiceRole.entities.GalleryPhoto.list('order', 50);
+
+    if (photos.length > 0) {
+      // Return cached Base44-hosted URLs
+      return Response.json({
+        photos: photos.map(p => ({
+          id: p.drive_id,
+          name: p.name || '',
+          url: p.base44_url,
+          thumbUrl: p.base44_url,
+        }))
+      });
+    }
+
+    // Fallback: fetch directly from Drive (may not work for unauthenticated users)
     const { accessToken } = await base44.asServiceRole.connectors.getConnection('googledrive');
 
-    // Search for image files across the entire Drive
     const query = encodeURIComponent("mimeType contains 'image/' and trashed = false");
     const fields = encodeURIComponent("files(id,name,mimeType)");
     const url = `https://www.googleapis.com/drive/v3/files?q=${query}&fields=${fields}&pageSize=50&orderBy=createdTime desc`;
@@ -23,7 +39,6 @@ Deno.serve(async (req) => {
     const files = (data.files || []).map(f => ({
       id: f.id,
       name: f.name,
-      // Use Google Drive's public thumbnail embed URL — no auth cookie needed
       url: `https://drive.google.com/thumbnail?id=${f.id}&sz=w1200`,
       thumbUrl: `https://drive.google.com/thumbnail?id=${f.id}&sz=w400`,
     }));
